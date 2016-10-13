@@ -1,0 +1,187 @@
+#include<iostream>
+#include "SearchEngine.h"
+#include "fstream"
+#include "Media.h"
+#include<vector>
+#include<string>
+SearchEngine::SearchEngine()
+{    
+  ifstream inf("book.txt");
+  string call_number_book;
+  string title_book;
+  string subject_book;
+  string author_book;
+  string description_book;
+  string publisher_book;
+  string city_book;
+  string year_book;
+  string series_book;
+  string notes_book;  
+  while(!(getline(inf, call_number_book, '|').eof()))
+  {    
+     getline(inf, title_book, '|');
+     getline(inf, subject_book, '|');
+     getline(inf, author_book, '|');
+     getline(inf, description_book, '|');
+     getline(inf, publisher_book, '|');
+     getline(inf, city_book, '|');
+     getline(inf, year_book, '|');
+     getline(inf, series_book, '|');  
+     getline(inf, notes_book, '\n'); 
+     Book* to_store=new Book (call_number_book,title_book,subject_book,author_book,description_book,publisher_book,city_book,year_book,series_book,notes_book);
+     CardCatalog.push_back(to_store); 
+     
+  }
+
+	inf.close();
+  
+  ifstream inf_film("film.txt");
+  string call_number_film;
+  string title_film;
+  string subject_film;
+  string director_film;
+  string notes_film;
+  string year_film;
+  
+    
+  while(!(getline(inf_film, call_number_film, '|').eof()))
+  {    
+     getline(inf_film, title_film, '|');
+     getline(inf_film, subject_film, '|');
+     getline(inf_film, director_film, '|');
+     getline(inf_film, notes_film, '|');
+     getline(inf_film, year_film, '\n');      
+     Film* to_store_film=new Film (call_number_film,title_film,subject_film,director_film,notes_film,year_film);
+     CardCatalog.push_back(to_store_film); 
+     
+  }
+
+inf_film.close();
+
+  ifstream inf_periodic("periodic.txt");
+  string call_number_periodic;
+  string title_periodic;
+  string subject_periodic;
+  string author_periodic;
+  string description_periodic;
+  string publisher_periodic;
+  string publish_hist_periodic;
+  string series_periodic;
+  string notes_periodic;
+  string related_titles_periodic;
+  string oth_title_periodic;
+  string gov_doc_periodic;  
+  while(!(getline(inf_periodic, call_number_periodic, '|').eof()))
+  {    
+     getline(inf_periodic, title_periodic, '|');
+     getline(inf_periodic, subject_periodic, '|');
+     getline(inf_periodic, author_periodic, '|');
+     getline(inf_periodic, description_periodic, '|');
+     getline(inf_periodic, publisher_periodic, '|');
+     getline(inf_periodic, publish_hist_periodic, '|');
+     getline(inf_periodic, series_periodic, '|');
+     getline(inf_periodic, notes_periodic, '|');
+     getline(inf_periodic, related_titles_periodic, '|');
+     getline(inf_periodic, oth_title_periodic, '|');  
+     getline(inf_periodic, gov_doc_periodic, '\n'); 
+     Periodic* to_store_periodic=new Periodic (call_number_periodic,title_periodic,subject_periodic,author_periodic,description_periodic,publisher_periodic,
+     publish_hist_periodic,series_periodic,notes_periodic,related_titles_periodic,oth_title_periodic,gov_doc_periodic);
+     CardCatalog.push_back(to_store_periodic);
+     
+  }
+
+inf_periodic.close();
+  
+  ifstream inf_video("video.txt");
+  string call_number_video;
+  string title_video;
+  string subject_video;
+  string description_video;
+  string distributor_video;
+  string notes_video;
+  string series_video;
+  string label_video;
+    
+  while(!(getline(inf_video, call_number_video, '|').eof()))
+  {    
+     getline(inf_video, title_video, '|');
+     getline(inf_video, subject_video, '|');
+     getline(inf_video, description_video, '|');
+     getline(inf_video, distributor_video, '|');
+     getline(inf_video, notes_video, '|');
+     getline(inf_video, series_video, '|');  
+     getline(inf_video, label_video, '\n'); 
+     Video* to_store_video=new Video (call_number_video,title_video,subject_video,description_video,distributor_video,notes_video,series_video,label_video);
+     CardCatalog.push_back(to_store_video); 
+     
+  }
+
+inf_video.close();
+  
+}
+vector<Media*>SearchEngine::search_by_title(const string & str) const
+{   
+   int size=CardCatalog.size();
+   vector<Media*> result; 
+   for(int i=0;i<size;i++)
+   {      
+      
+      if(CardCatalog[i]->compare_title(str))
+      {      
+          result.push_back(CardCatalog[i]);
+      }
+   }
+   return result;
+}
+vector<Media*> SearchEngine::search_by_call_number(const string &str) const
+{
+ int size=CardCatalog.size();
+   vector<Media*> result;
+   for(int i=0;i<size;i++)
+   {      
+      
+      if(CardCatalog[i]->compare_call_number(str))
+      {      
+          result.push_back(CardCatalog[i]);
+      }
+   }
+   return result;  
+}
+
+vector<Media*> SearchEngine::search_by_subjects(const string &str) const
+{
+   int size=CardCatalog.size();
+   vector<Media*> result;
+   for(int i=0;i<size;i++)
+   {      
+      
+      if(CardCatalog[i]->compare_subject(str))
+      {      
+          result.push_back(CardCatalog[i]);
+      }
+   }
+   return result;
+}
+vector<Media*> SearchEngine::search_by_other(const string &str) const
+{
+   
+   int size=CardCatalog.size();
+   vector<Media*> result;
+   for(int i=0;i<size;i++)
+   {      
+      
+      if(CardCatalog[i]->compare_other(str))
+      {        
+          result.push_back(CardCatalog[i]);
+      }
+   }
+   return result;
+}
+
+SearchEngine :: ~SearchEngine()
+{
+   for(int i=0;i<CardCatalog.size();i++)
+   {
+      delete CardCatalog[i];
+   }
+}

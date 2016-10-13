@@ -1,0 +1,35 @@
+#ifndef FILM_H
+#define FILM_H
+
+#include<iostream>
+#include<string>
+#include "Media.h"
+
+using namespace std;
+
+
+//below for testing
+class Film : public Media 
+{
+                                      
+    private:
+     //  string call_number;
+     //  string title;
+     //  string subject;       
+       string year;
+       string director;
+     //  string notes;
+      
+        
+       public:
+       Film(string, string, string, string, string, string); 
+       void display() const;
+   //    bool compare_title(string);
+    //   bool compare_call_number(string);
+    //   bool compare_subject(string);
+       bool compare_other(const string&) const;
+       
+	
+};
+
+#endif

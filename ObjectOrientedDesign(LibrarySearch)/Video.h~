@@ -1,0 +1,35 @@
+#ifndef VIDEO_H
+#define VIDEO_H
+#include<iostream>
+#include<string>
+#include "Media.h"
+
+using namespace std;
+
+class Video : public Media 
+{
+                                      
+    private:
+     //  string call_number;
+     //  string title;
+     //  string subject;
+       string description;
+       string distributor;
+      // string notes;
+       string series;
+       string label;       
+     
+      
+        
+       public:
+       Video(string, string, string, string, string, string,string,string); 
+       void display() const;
+   //    bool compare_title(string);
+    //   bool compare_call_number(string);
+    //   bool compare_subject(string);
+       bool compare_other(const string&) const;
+       
+	
+};
+
+#endif
