@@ -1,0 +1,15 @@
+{{% extends "base.html %}}
+{% load staticfiles %}
+{% block content%}
+
+<body>
+<h1>{{ username }}</h1><br>
+{% for treasure in treasures %}
+    <a href="/{{treasure.id}}/"><p>{{treasure.name}}</p>
+       <!-- <img src="{{ treasure.image.url}}">--->
+    </a>
+{% endfor %}
+
+
+</body>
+{% endblock %}

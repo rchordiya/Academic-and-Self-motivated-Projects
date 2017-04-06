@@ -1,7 +1,10 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from .models import Treasure
-from .forms import TreasureForm
+from .forms import TreasureForm,LoginForm
 from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate,login,logout
+
 
 # Create your views here.
 def index(request):
@@ -14,7 +17,35 @@ def detail(request,treasure_id):
     return render(request,'detail.html',{'treasure': treasure})
 
 def post_treasure(request):
-    form=TreasureForm(request.POST,request.FILES)
+    form=TreasureForm(request.POST)
     if form.is_valid():
-        form.save(commit=True)
+        treasure=form.save(commit=False)
+        treasure.user=request.user
+        treasure.save()
+    return HttpResponseRedirect('/')
+def profile(request,username):
+    user= User.objects.get(username=username)
+    treasures=Treasure.objects.filter(user=user)
+    return render(request,'profile.html',{'username':username,'treasures':treasures})
+
+def login_view(request):
+    if request.method== 'POST':
+        form=LoginForm(request.POST)
+        if form.is_valid():
+            u=form.cleaned_data['username']
+            p=form.cleaned_data['password']
+            user=authenticate(username=u,password=p)
+            if user is not None:
+                if user.is_active:
+                    login(request,user)
+                    return HttpResponseRedirect('/')
+                else:
+                    print('The account is disabled')
+            else:
+                print("Username and password incorrect")
+    else:
+        form=LoginForm()
+        return render(request,'login.html',{'form':form})
+def logout_view(request):
+    logout(request)
     return HttpResponseRedirect('/')

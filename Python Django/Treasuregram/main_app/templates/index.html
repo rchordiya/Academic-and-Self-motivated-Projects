@@ -1,4 +1,7 @@
 {% load staticfiles %}
+{{% extends "base.html %}}
+
+{% block content %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +13,7 @@
 
 <h1> TreasureGram </h1>
 {% for treasure in treasures %}
+    <a href="/user/{{treasure.user.username}}/">by:{{ treasure.user.username }}</a>
     <a href="/{{treasure.id}}/">
         <p>{{treasure.name}}</p>
        <!-- <img src="{{ treasure.image.url}}">--->
@@ -24,3 +28,4 @@
 </body>
 
 </html>
+{% endblock %}
